@@ -14,6 +14,7 @@ function App() {
   const [loader, setLoader] = useState(false);
   const [startSpeach, setStartSpeach] = useState(false);
   const [bgMcrColor, setBgMcrColor] = useState(false);
+  const [language, setLanguage] = useState('ru');
 
   const bgStyle = {
     backgroundColor: '#FA6D20',
@@ -31,8 +32,7 @@ function App() {
     const region = import.meta.env.VITE_PUBLIC_SMARTAPP_REGION;
     const speechConfig = sdk.SpeechConfig.fromSubscription(token, region);
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
-
-    speechConfig.speechRecognitionLanguage = 'ru-RU';
+    speechConfig.speechRecognitionLanguage = language === 'ru' ? 'ru-RU' : 'en-US';
 
     const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
     recognizer.recognizeOnceAsync((result) => {
@@ -53,6 +53,12 @@ function App() {
 
   return (
     <div>
+      <div className="selectPos">
+        <select className="select" value={language} onChange={(e) => setLanguage(e.target.value)}>
+          <option value='ru'>Русский</option>
+          <option value='en'>English</option>
+        </select>
+      </div>
       <div className="microphone">
         {loader && <div className="loader" onClick={cancelSpeech}></div>}
         {!loader && (
@@ -78,7 +84,7 @@ function App() {
           <Environment background={false} files="./images/photo_studio_loft_hall_1k.hdr" />
         </Suspense>
         <Suspense fallback={null}>
-          <Avatar setAudio={setAudio} setLoader={setLoader} startSpeach={startSpeach} text={text} />
+          <Avatar setAudio={setAudio} setLoader={setLoader} startSpeach={startSpeach} text={text} language={language}/>
         </Suspense>
       </Canvas>
       <Loader dataInterpolation={() => `Загрузка...`} />

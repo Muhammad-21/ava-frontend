@@ -79,3 +79,13 @@
       box-shadow: .5em -.5em 0 0 currentcolor;
     }
   }
+
+
+.selectPos {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.select {
+    font-size: 14px;
+}

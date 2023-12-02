@@ -7,7 +7,7 @@ import blinkData from "../utils/blendDataBlink.json";
 
 
 const Avatar = (props) => {
-    const { text, setAudio, startSpeach, setLoader } = props
+    const { text, setAudio, startSpeach, setLoader, language } = props
     let gltf = useGLTF('./model.glb');
     let morphTargetDictionaryBody = null;
     let morphTargetDictionaryLowerTeeth = null;
@@ -160,7 +160,7 @@ const Avatar = (props) => {
       });
   
     useEffect(() => {
-      const host = 'https://ava-backend-nm0p.onrender.com'
+      const host = 'https://ava-backend-72sc.onrender.com'
       if(text.length){
         setLoader(true)
         fetch(host + '/talk', {
@@ -168,7 +168,7 @@ const Avatar = (props) => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({text: text})
+          body: JSON.stringify({text: text, language})
         }).then(res => res.json()).then(data => {
         const { blendData, filename } = data
         setAudio(host + filename)
@@ -181,9 +181,12 @@ const Avatar = (props) => {
           ),
         ];
         setClips(newClips);
+      }).catch (e => {
+        setLoader(false)
+        console.log(e)
       })
     }
-    }, [morphTargetDictionaryBody, morphTargetDictionaryLowerTeeth, setAudio, setLoader, text]);
+    }, [text]);
 
     useEffect(() => {
       startSpeach && clips.forEach((clip) => {

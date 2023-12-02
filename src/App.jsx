@@ -41,6 +41,9 @@ function App() {
       }
       setBgMcrColor(false);
       recognizer.close();
+    },
+    (err) => {
+      console.log(err)
     });
   };
 

@@ -28,8 +28,8 @@ function App() {
     if (bgMcrColor) {
       cancelSpeech();
     }
-    const token = import.meta.env.VITE_PUBLIC_SMARTAPP_KEY;
-    const region = import.meta.env.VITE_PUBLIC_SMARTAPP_REGION;
+    const token = 'e77190fafa854380bc05aa3b6ebeb52a';
+    const region = 'eastus2';
     const speechConfig = sdk.SpeechConfig.fromSubscription(token, region);
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
     speechConfig.speechRecognitionLanguage = language === 'ru' ? 'ru-RU' : 'en-US';

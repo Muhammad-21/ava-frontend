@@ -15,6 +15,8 @@ function App() {
   const [startSpeach, setStartSpeach] = useState(false);
   const [bgMcrColor, setBgMcrColor] = useState(false);
   const [language, setLanguage] = useState('ru');
+  const [assistantResponse, setAssistantResponse] = useState('');
+
 
   const bgStyle = {
     backgroundColor: '#FA6D20',
@@ -54,10 +56,15 @@ function App() {
     setAudio(null);
   };
 
+  const handleChange = (e) => {
+    setLanguage(e.target.value)
+    setAssistantResponse('')
+  }
+
   return (
     <div>
       <div className="selectPos">
-        <select className="select" value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <select className="select" value={language} onChange={handleChange}>
           <option value='ru'>Русский</option>
           <option value='en'>English</option>
         </select>
@@ -87,7 +94,15 @@ function App() {
           <Environment background={false} files="./images/photo_studio_loft_hall_1k.hdr" />
         </Suspense>
         <Suspense fallback={null}>
-          <Avatar setAudio={setAudio} setLoader={setLoader} startSpeach={startSpeach} text={text} language={language}/>
+          <Avatar 
+            setAudio={setAudio} 
+            setLoader={setLoader} 
+            startSpeach={startSpeach} 
+            text={text} 
+            language={language}
+            assistantResponse={assistantResponse}
+            setAssistantResponse={setAssistantResponse}
+          />
         </Suspense>
       </Canvas>
       <Loader dataInterpolation={() => `Загрузка...`} />

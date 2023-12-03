@@ -7,7 +7,7 @@ import blinkData from "../utils/blendDataBlink.json";
 
 
 const Avatar = (props) => {
-    const { text, setAudio, startSpeach, setLoader, language } = props
+    const { text, setAudio, startSpeach, setLoader, language, assistantResponse, setAssistantResponse } = props
     let gltf = useGLTF('./model.glb');
     let morphTargetDictionaryBody = null;
     let morphTargetDictionaryLowerTeeth = null;
@@ -15,6 +15,7 @@ const Avatar = (props) => {
     let { clips: idleClips } = useAnimations(idleFbx.animations);
     const mixer = useMemo(() => new AnimationMixer(gltf.scene), [gltf.scene]);
     const [clips, setClips] = useState([]);
+
     const [
         bodyTexture,
         eyesTexture,
@@ -168,10 +169,11 @@ const Avatar = (props) => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({text: text, language})
+          body: JSON.stringify({text: text, answer: assistantResponse, language: language})
         }).then(res => res.json()).then(data => {
-        const { blendData, filename } = data
+        const { blendData, filename, assistantAnswer } = data
         setAudio(host + filename)
+        setAssistantResponse(assistantAnswer)
         let newClips = [
           createAnimation(blendData, morphTargetDictionaryBody, "HG_Body"),
           createAnimation(
